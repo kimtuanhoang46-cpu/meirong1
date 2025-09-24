@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>专业团队 - 美丽时光美容院</title>
+  <style>
+    :root {
+      --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --warm: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.3) 0%, transparent 50%),
+        linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--text-primary); 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+    
+    .container { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 0 20px; 
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 0 0 24px 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 20px 0;
+      margin-bottom: 40px;
+    }
+    
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: #667eea;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 0 0 20px;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-bottom: 60px;
+    }
+    
+    .staff-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .staff-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    }
+    
+    .staff-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .staff-avatar {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .staff-avatar::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    .staff-name {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 10px;
+      color: var(--text-primary);
+    }
+    
+    .staff-title {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    
+    .staff-experience {
+      background: var(--accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    .staff-specialties {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+    }
+    
+    .staff-specialties li {
+      padding: 8px 0;
+      color: var(--text-secondary);
+      position: relative;
+      padding-left: 25px;
+    }
+    
+    .staff-specialties li::before {
+      content: '✨';
+      position: absolute;
+      left: 0;
+    }
+    
+    .staff-bio {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 20px 0;
+      font-style: italic;
+    }
+    
+    .cta-button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .footer {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px 24px 0 0;
+      padding: 40px 0;
+      text-align: center;
+      margin-top: 60px;
+    }
+    
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .hero h1 {
+        font-size: 36px;
+      }
+      
+      .staff-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">美丽时光美容院</div>
+        <ul class="nav-links">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="services.html">服务项目</a></li>
+          <li><a href="staff.html">美容师</a></li>
+          <li><a href="gallery.html">作品展示</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>专业美容师团队</h1>
+      <p>经验丰富的专业团队，为您提供最优质的美容服务</p>
+    </section>
+
+    <section class="staff-grid">
+      <div class="staff-card">
+        <div class="staff-avatar">👩‍⚕️</div>
+        <h3 class="staff-name">李美丽</h3>
+        <p class="staff-title">首席美容师</p>
+        <div class="staff-experience">8年专业经验</div>
+        <p class="staff-bio">"美丽不仅仅是外表，更是一种自信的生活态度。我致力于帮助每一位客户发现并展现最美的自己。"</p>
+        <ul class="staff-specialties">
+          <li>面部护理专家</li>
+          <li>抗衰老护理</li>
+          <li>问题肌肤治疗</li>
+          <li>彩妆造型设计</li>
+        </ul>
+        <a href="index.html" class="cta-button">预约李老师</a>
+      </div>
+
+      <div class="staff-card">
+        <div class="staff-avatar">💆‍♀️</div>
+        <h3 class="staff-name">王雅婷</h3>
+        <p class="staff-title">高级美容师</p>
+        <div class="staff-experience">6年专业经验</div>
+        <p class="staff-bio">"专业的技术和贴心的服务是我的承诺。每一次护理都是对美的追求，对客户的关爱。"</p>
+        <ul class="staff-specialties">
+          <li>身体护理专家</li>
+          <li>淋巴排毒按摩</li>
+          <li>紧致塑形护理</li>
+          <li>香薰疗法</li>
+        </ul>
+        <a href="index.html" class="cta-button">预约王老师</a>
+      </div>
+
+      <div class="staff-card">
+        <div class="staff-avatar">💅</div>
+        <h3 class="staff-name">张小雨</h3>
+        <p class="staff-title">美甲美睫师</p>
+        <div class="staff-experience">5年专业经验</div>
+        <p class="staff-bio">"细节决定美丽。我专注于每一个细节，让您的手部和眼部更加精致迷人。"</p>
+        <ul class="staff-specialties">
+          <li>美甲艺术设计</li>
+          <li>美睫嫁接技术</li>
+          <li>手部护理保养</li>
+          <li>个性化造型</li>
+        </ul>
+        <a href="index.html" class="cta-button">预约张老师</a>
+      </div>
+
+      <div class="staff-card">
+        <div class="staff-avatar">🌿</div>
+        <h3 class="staff-name">陈养生</h3>
+        <p class="staff-title">养生美容师</p>
+        <div class="staff-experience">7年专业经验</div>
+        <p class="staff-bio">"内外兼修，身心和谐。结合传统中医养生理念，为您提供全方位的健康美容服务。"</p>
+        <ul class="staff-specialties">
+          <li>中医体质调理</li>
+          <li>经络疏通按摩</li>
+          <li>草本护肤护理</li>
+          <li>养生指导</li>
+        </ul>
+        <a href="index.html" class="cta-button">预约陈老师</a>
+      </div>
+
+      <div class="staff-card">
+        <div class="staff-avatar">💄</div>
+        <h3 class="staff-name">刘彩妆</h3>
+        <p class="staff-title">彩妆造型师</p>
+        <div class="staff-experience">4年专业经验</div>
+        <p class="staff-bio">"每个女人都有自己独特的美丽。我的使命是帮助您发现并展现最自信的一面。"</p>
+        <ul class="staff-specialties">
+          <li>日常妆容设计</li>
+          <li>晚宴妆容造型</li>
+          <li>新娘妆设计</li>
+          <li>彩妆技巧教学</li>
+        </ul>
+        <a href="index.html" class="cta-button">预约刘老师</a>
+      </div>
+
+      <div class="staff-card">
+        <div class="staff-avatar">✨</div>
+        <h3 class="staff-name">赵专业</h3>
+        <p class="staff-title">皮肤管理师</p>
+        <div class="staff-experience">9年专业经验</div>
+        <p class="staff-bio">"科学护肤，精准管理。运用先进的皮肤检测技术，为每位客户制定专属的护肤方案。"</p>
+        <ul class="staff-specialties">
+          <li>皮肤问题诊断</li>
+          <li>专业皮肤检测</li>
+          <li>个性化护肤方案</li>
+          <li>居家护理指导</li>
+        </ul>
+        <a href="index.html" class="cta-button">预约赵老师</a>
+      </div>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 美丽时光美容院. 让美丽成为习惯</p>
+    </div>
+  </footer>
+</body>
+</html>

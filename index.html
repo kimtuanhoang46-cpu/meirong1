@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>美容院预约</title>
+  <title>美丽时光美容院 - 专业美容服务</title>
   <style>
     :root {
       /* 国际范儿色彩系统 */
@@ -59,11 +59,148 @@
     }
     
     .container { 
-      max-width: 900px; 
-      margin: 32px auto; 
+      max-width: 1200px; 
+      margin: 0 auto; 
       padding: 0 20px; 
       position: relative;
       z-index: 1;
+    }
+    
+    .header {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 0 0 24px 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 20px 0;
+      margin-bottom: 40px;
+    }
+    
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: #667eea;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-gradient);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+      padding: 40px 0;
+    }
+    
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 0 0 20px;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .hero-btn {
+      background: var(--primary-gradient);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .hero-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .hero-btn.secondary {
+      background: var(--glass-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--glass-border);
+    }
+    
+    .hero-btn.secondary:hover {
+      background: var(--secondary-gradient);
+      color: white;
+    }
+    
+    .main-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .footer {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px 24px 0 0;
+      padding: 40px 0;
+      text-align: center;
+      margin-top: 60px;
     }
     
     .card { 
@@ -254,6 +391,25 @@
     
     /* 响应式设计 */
     @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .hero h1 {
+        font-size: 36px;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
       .container { padding: 0 16px; }
       .card { padding: 24px; }
       .row { grid-template-columns: 1fr; gap: 16px; }
@@ -263,8 +419,31 @@
 </head>
 <body>
   <div class="container">
-    <div class="card">
-      <h1>美容院预约</h1>
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">美丽时光美容院</div>
+        <ul class="nav-links">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="services.html">服务项目</a></li>
+          <li><a href="staff.html">美容师</a></li>
+          <li><a href="gallery.html">作品展示</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>美丽时光美容院</h1>
+      <p>专业美容服务，让您焕发自然美丽</p>
+      <div class="hero-buttons">
+        <a href="#booking" class="hero-btn">立即预约</a>
+        <a href="services.html" class="hero-btn secondary">了解服务</a>
+      </div>
+    </section>
+
+    <div class="main-content">
+      <div class="card" id="booking">
+        <h1>在线预约</h1>
       <div id="auth-area">
         <div id="signed-out">
           <div style="margin-top:4px; display:flex; gap:8px; align-items:center; flex-wrap: wrap;">
@@ -595,5 +774,11 @@
     
     console.log('所有事件监听器已设置完成');
   </script>
+  
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 美丽时光美容院. 让美丽成为习惯</p>
+    </div>
+  </footer>
 </body>
 </html>

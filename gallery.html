@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>作品展示 - 美丽时光美容院</title>
+  <style>
+    :root {
+      --primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --warm: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.3) 0%, transparent 50%),
+        linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--text-primary); 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+    
+    .container { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 0 20px; 
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 0 0 24px 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 20px 0;
+      margin-bottom: 40px;
+    }
+    
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: #667eea;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    .hero {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 0 0 20px;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    
+    .filter-tab:hover,
+    .filter-tab.active {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+    
+    .gallery-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    
+    .gallery-item:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .gallery-image {
+      width: 100%;
+      height: 250px;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .gallery-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .gallery-content {
+      padding: 24px;
+    }
+    
+    .gallery-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 0 0 10px;
+      color: var(--text-primary);
+    }
+    
+    .gallery-description {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    
+    .gallery-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .gallery-tag {
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .gallery-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    
+    .gallery-category {
+      font-weight: 500;
+    }
+    
+    .gallery-date {
+      font-style: italic;
+    }
+    
+    .cta-section {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .cta-section h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 20px;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .cta-section p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+    }
+    
+    .cta-button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .footer {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px 24px 0 0;
+      padding: 40px 0;
+      text-align: center;
+      margin-top: 60px;
+    }
+    
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .hero h1 {
+        font-size: 36px;
+      }
+      
+      .filter-tabs {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">美丽时光美容院</div>
+        <ul class="nav-links">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="services.html">服务项目</a></li>
+          <li><a href="staff.html">美容师</a></li>
+          <li><a href="gallery.html">作品展示</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>美丽作品展示</h1>
+      <p>见证我们的专业技艺，感受美丽的力量</p>
+    </section>
+
+    <div class="filter-tabs">
+      <div class="filter-tab active" data-category="all">全部作品</div>
+      <div class="filter-tab" data-category="facial">面部护理</div>
+      <div class="filter-tab" data-category="body">身体护理</div>
+      <div class="filter-tab" data-category="nail">美甲美睫</div>
+      <div class="filter-tab" data-category="makeup">彩妆造型</div>
+    </div>
+
+    <section class="gallery-grid">
+      <div class="gallery-item" data-category="facial">
+        <div class="gallery-image">💆‍♀️</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">深层清洁护理</h3>
+          <p class="gallery-description">专业的面部深层清洁，去除老化角质，让肌肤重现光滑细腻。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">面部护理</span>
+            <span class="gallery-tag">深层清洁</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">面部护理</span>
+            <span class="gallery-date">2024.09.20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="body">
+        <div class="gallery-image">🧴</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">全身SPA护理</h3>
+          <p class="gallery-description">放松身心的全身SPA护理，让您享受极致的舒适体验。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">身体护理</span>
+            <span class="gallery-tag">SPA</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">身体护理</span>
+            <span class="gallery-date">2024.09.18</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="nail">
+        <div class="gallery-image">💅</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">精致美甲设计</h3>
+          <p class="gallery-description">个性化美甲设计，展现独特的时尚品味。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">美甲</span>
+            <span class="gallery-tag">设计</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">美甲美睫</span>
+            <span class="gallery-date">2024.09.15</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="makeup">
+        <div class="gallery-image">💄</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">晚宴妆容造型</h3>
+          <p class="gallery-description">优雅的晚宴妆容，让您在重要场合光彩照人。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">彩妆</span>
+            <span class="gallery-tag">晚宴</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">彩妆造型</span>
+            <span class="gallery-date">2024.09.12</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="facial">
+        <div class="gallery-image">✨</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">抗衰老护理</h3>
+          <p class="gallery-description">专业的抗衰老护理，帮助肌肤重获年轻活力。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">面部护理</span>
+            <span class="gallery-tag">抗衰老</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">面部护理</span>
+            <span class="gallery-date">2024.09.10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="body">
+        <div class="gallery-image">🌿</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">淋巴排毒按摩</h3>
+          <p class="gallery-description">专业的淋巴排毒按摩，促进血液循环，提升身体活力。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">身体护理</span>
+            <span class="gallery-tag">淋巴排毒</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">身体护理</span>
+            <span class="gallery-date">2024.09.08</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="nail">
+        <div class="gallery-image">👁️</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">自然美睫嫁接</h3>
+          <p class="gallery-description">自然逼真的美睫嫁接，让双眼更加迷人。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">美睫</span>
+            <span class="gallery-tag">嫁接</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">美甲美睫</span>
+            <span class="gallery-date">2024.09.05</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-item" data-category="makeup">
+        <div class="gallery-image">👰</div>
+        <div class="gallery-content">
+          <h3 class="gallery-title">新娘妆设计</h3>
+          <p class="gallery-description">浪漫优雅的新娘妆容，让您成为最美的新娘。</p>
+          <div class="gallery-tags">
+            <span class="gallery-tag">新娘妆</span>
+            <span class="gallery-tag">婚礼</span>
+          </div>
+          <div class="gallery-meta">
+            <span class="gallery-category">彩妆造型</span>
+            <span class="gallery-date">2024.09.02</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <h2>想要拥有同样的美丽吗？</h2>
+      <p>立即预约，让我们的专业团队为您打造专属美丽</p>
+      <a href="index.html" class="cta-button">立即预约</a>
+    </section>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 美丽时光美容院. 让美丽成为习惯</p>
+    </div>
+  </footer>
+
+  <script>
+    // 作品筛选功能
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // 移除所有active类
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        // 添加active类到当前点击的标签
+        tab.classList.add('active');
+        
+        const category = tab.getAttribute('data-category');
+        const items = document.querySelectorAll('.gallery-item');
+        
+        items.forEach(item => {
+          if (category === 'all' || item.getAttribute('data-category') === category) {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

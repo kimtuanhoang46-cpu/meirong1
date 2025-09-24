@@ -444,8 +444,13 @@
       'cancelled': '已取消'
     };
     
-    // 获取状态的中文显示文本
-    const getStatusText = (status) => statusMap[status] || status;
+    // 获取状态的中文显示文本，处理null值
+    const getStatusText = (status) => {
+      if (!status || status === 'null' || status === null) {
+        return '待处理';
+      }
+      return statusMap[status] || status;
+    };
     
     // 状态转换规则
     const statusFlow = {
@@ -610,7 +615,7 @@
           <td>${fmt(a.appointment_time)}</td>
           <td>
             <select data-id="${a.id}" class="status-select">
-              ${['pending','confirmed','in_progress','completed','cancelled'].map(s => `<option value="${s}" ${s===a.status?'selected':''}>${getStatusText(s)}</option>`).join('')}
+              ${['pending','confirmed','in_progress','completed','cancelled'].map(s => `<option value="${s}" ${(s===a.status || (!a.status && s==='pending'))?'selected':''}>${getStatusText(s)}</option>`).join('')}
             </select>
           </td>
           <td>${a.notes || '无备注'}</td>
@@ -822,7 +827,7 @@
           <td>${fmt(a.appointment_time)}</td>
           <td>
             <select data-id="${a.id}" class="status-select">
-              ${['pending','confirmed','in_progress','completed','cancelled'].map(s => `<option value="${s}" ${s===a.status?'selected':''}>${getStatusText(s)}</option>`).join('')}
+              ${['pending','confirmed','in_progress','completed','cancelled'].map(s => `<option value="${s}" ${(s===a.status || (!a.status && s==='pending'))?'selected':''}>${getStatusText(s)}</option>`).join('')}
             </select>
           </td>
           <td>${a.notes || '无备注'}</td>
