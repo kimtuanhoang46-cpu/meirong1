@@ -1,0 +1,599 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>美容院预约</title>
+  <style>
+    :root {
+      /* 国际范儿色彩系统 */
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --warm-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      --glass-bg: rgba(255, 255, 255, 0.25);
+      --glass-border: rgba(255, 255, 255, 0.18);
+      --text-primary: #2d3748;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --shadow-soft: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 226, 0.3) 0%, transparent 50%),
+        linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: var(--text-primary); 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* 动态背景效果 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+      animation: float 20s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(1deg); }
+    }
+    
+    .container { 
+      max-width: 900px; 
+      margin: 32px auto; 
+      padding: 0 20px; 
+      position: relative;
+      z-index: 1;
+    }
+    
+    .card { 
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px; 
+      box-shadow: var(--shadow-soft);
+      padding: 32px; 
+      margin-bottom: 24px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    }
+    
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    h1 { 
+      font-size: 28px; 
+      margin: 0 0 16px; 
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+    }
+    
+    h2 { 
+      font-size: 22px; 
+      margin: 0 0 16px; 
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    label { 
+      display: block; 
+      font-size: 14px; 
+      color: var(--text-secondary); 
+      margin: 16px 0 8px; 
+      font-weight: 500;
+    }
+    
+    input, select, textarea { 
+      width: 100%; 
+      box-sizing: border-box; 
+      font-size: 16px; 
+      padding: 16px 20px; 
+      border-radius: 16px; 
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      outline: none; 
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(102, 126, 234, 0.5);
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    textarea { 
+      min-height: 120px; 
+      resize: vertical; 
+    }
+    
+    .row { 
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      gap: 20px; 
+    }
+    
+    .btn { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 10px; 
+      border: 0; 
+      border-radius: 16px; 
+      padding: 16px 24px; 
+      background: var(--primary-gradient);
+      color: #fff; 
+      cursor: pointer; 
+      font-weight: 600; 
+      font-size: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn.secondary { 
+      background: var(--secondary-gradient);
+    }
+    
+    .btn.link { 
+      background: transparent; 
+      color: var(--text-primary); 
+      padding: 8px 0;
+      text-decoration: underline;
+    }
+    
+    .muted { 
+      color: var(--text-muted); 
+      font-size: 14px; 
+    }
+    
+    .list { 
+      border: 1px solid rgba(255, 255, 255, 0.2); 
+      border-radius: 20px; 
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    .item { 
+      display: flex; 
+      gap: 16px; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding: 20px 24px; 
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .item:first-child { 
+      border-top: 0; 
+    }
+    
+    .item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .status { 
+      font-size: 12px; 
+      padding: 6px 12px; 
+      border-radius: 20px; 
+      background: var(--accent-gradient);
+      color: white;
+      font-weight: 500;
+    }
+    
+    .error { 
+      color: #e53e3e; 
+      font-size: 14px; 
+    }
+    
+    .success { 
+      color: #38a169; 
+      font-size: 14px; 
+    }
+    
+    .right { 
+      text-align: right; 
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .container { padding: 0 16px; }
+      .card { padding: 24px; }
+      .row { grid-template-columns: 1fr; gap: 16px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>美容院预约</h1>
+      <div id="auth-area">
+        <div id="signed-out">
+          <div style="margin-top:4px; display:flex; gap:8px; align-items:center; flex-wrap: wrap;">
+            <button id="btn-guest" class="btn">一键进入</button>
+            <span class="muted">无需注册与邮箱，点击即可使用</span>
+          </div>
+          <div id="auth-msg" class="muted" style="margin-top:8px;"></div>
+        </div>
+        <div id="signed-in" style="display:none;">
+          <div style="display:flex; align-items:center; justify-content: space-between;">
+            <div>
+              <div class="muted">已登录：</div>
+              <div id="user-email" style="font-weight:600;"></div>
+            </div>
+            <div>
+              <button id="btn-signout" class="btn secondary">退出登录</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="booking-card" style="display:none;">
+      <h2>预约</h2>
+      <div class="row">
+        <div>
+          <label>姓名</label>
+          <input id="customer_name" placeholder="例如：王女士" />
+        </div>
+        <div>
+          <label>联系方式</label>
+          <input id="phone" placeholder="例如：13800000000" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>项目</label>
+          <select id="service">
+            <option value="面部护理">面部护理</option>
+            <option value="皮肤管理">皮肤管理</option>
+            <option value="美甲美睫">美甲美睫</option>
+            <option value="身体护理">身体护理</option>
+          </select>
+        </div>
+        <div>
+          <label>预约时间</label>
+          <input id="appointment_time" type="datetime-local" />
+        </div>
+      </div>
+      <label>备注</label>
+      <textarea id="notes" placeholder="可选"></textarea>
+      <div style="margin-top:12px; display:flex; gap:8px; align-items:center;">
+        <button id="btn-book" class="btn">提交预约</button>
+        <div id="book-msg" class="muted"></div>
+      </div>
+    </div>
+
+    <div class="card" id="my-card" style="display:none;">
+      <div style="display:flex; align-items:center; justify-content: space-between;">
+        <h2>我的预约</h2>
+        <button id="btn-refresh" class="btn">刷新</button>
+      </div>
+      <div id="my-list" class="list" style="margin-top:10px;"></div>
+      <div id="my-empty" class="muted" style="display:none;">暂无预约</div>
+    </div>
+
+    <div class="right" style="margin-top:8px;">
+      <a href="admin.html" class="btn link">管理员入口</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    const SUPABASE_URL = "https://yxumytufdjardhwlrexr.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl4dW15dHVmZGphcmRod2xyZXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1NDQ2MjAsImV4cCI6MjA3NDEyMDYyMH0.v4uyS0SKzy92KKmG6JfYNLZyFf1YY7Q_QxXmy5_9uMU";
+    
+    // 创建 Supabase 客户端，添加优化配置
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: false,
+        flowType: 'pkce'
+      },
+      global: {
+        headers: {
+          'X-Client-Info': 'beauty-salon-app'
+        }
+      }
+    });
+    
+    console.log('Supabase 客户端已初始化:', {
+      url: SUPABASE_URL,
+      hasAnonKey: !!SUPABASE_ANON_KEY,
+      client: supabase
+    });
+
+    const el = (id) => document.getElementById(id);
+    const fmt = (ts) => new Date(ts).toLocaleString();
+    
+    // 状态映射：英文到中文
+    const statusMap = {
+      'pending': '待处理',
+      'confirmed': '已确认',
+      'completed': '已完成',
+      'cancelled': '已取消'
+    };
+    
+    // 获取状态的中文显示文本
+    const getStatusText = (status) => statusMap[status] || status;
+
+    async function refreshSessionUI() {
+      console.log('=== 开始刷新登录状态 ===');
+      
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        const signedIn = !!session;
+        
+        console.log('会话检查结果:', {
+          signedIn,
+          userEmail: session?.user?.email,
+          userId: session?.user?.id,
+          error: error?.message
+        });
+
+        // 强制显示/隐藏元素 - 使用更明确的控制
+        if (signedIn) {
+          console.log('用户已登录，显示登录后界面');
+          el('signed-out').style.display = 'none';
+          el('signed-in').style.display = 'block';
+          el('booking-card').style.display = 'block';
+          el('my-card').style.display = 'block';
+        } else {
+          console.log('用户未登录，显示登录前界面');
+          el('signed-out').style.display = 'block';
+          el('signed-in').style.display = 'none';
+          el('booking-card').style.display = 'none';
+          el('my-card').style.display = 'none';
+        }
+
+        console.log('界面元素最终状态:', {
+          'signed-out': el('signed-out').style.display,
+          'signed-in': el('signed-in').style.display,
+          'booking-card': el('booking-card').style.display,
+          'my-card': el('my-card').style.display
+        });
+
+        if (session?.user?.email) {
+          el('user-email').textContent = session.user.email;
+          console.log('用户邮箱已设置:', session.user.email);
+        }
+
+        if (signedIn) {
+          console.log('用户已登录，开始加载预约数据...');
+          await loadMyAppointments();
+        } else {
+          console.log('用户未登录，跳过数据加载');
+        }
+        
+        console.log('=== 登录状态刷新完成 ===');
+        
+      } catch (err) {
+        console.error('刷新登录状态异常:', err);
+        // 发生异常时显示未登录状态
+        el('signed-out').style.display = 'block';
+        el('signed-in').style.display = 'none';
+        el('booking-card').style.display = 'none';
+        el('my-card').style.display = 'none';
+      }
+    }
+
+    el('btn-signout').addEventListener('click', async () => { await supabase.auth.signOut(); await refreshSessionUI(); });
+
+    // 一键免注册（增强版登录）
+    el('btn-guest').addEventListener('click', async () => {
+      console.log('=== 开始一键进入流程 ===');
+      el('auth-msg').textContent = '正在进入...';
+      
+      try {
+        console.log('1. 检查 Supabase 客户端状态...');
+        console.log('Supabase URL:', SUPABASE_URL);
+        console.log('Supabase 客户端:', supabase);
+        
+        console.log('2. 开始密码登录...');
+        el('auth-msg').textContent = '正在登录...';
+        
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: '340365946@qq.com',
+          password: 'MeiRong@123'
+        });
+        
+        console.log('3. 登录响应:', { data, error });
+        
+        if (error) {
+          console.error('登录失败详情:', error);
+          el('auth-msg').innerHTML = `<span class="error">登录失败：${error.message}</span>`;
+          return;
+        }
+        
+        if (!data || !data.user) {
+          console.error('登录数据异常:', data);
+          el('auth-msg').innerHTML = '<span class="error">登录数据异常</span>';
+          return;
+        }
+        
+        console.log('4. 登录成功，用户信息:', data.user);
+        el('auth-msg').innerHTML = '<span class="success">登录成功，正在加载...</span>';
+        
+        // 等待认证状态完全更新
+        console.log('5. 等待认证状态更新...');
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // 验证登录状态
+        console.log('6. 验证登录状态...');
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        console.log('当前会话:', { session, sessionError });
+        
+        if (sessionError || !session) {
+          console.error('会话验证失败:', sessionError);
+          el('auth-msg').innerHTML = '<span class="error">会话验证失败</span>';
+          return;
+        }
+        
+        console.log('7. 刷新界面状态...');
+        await refreshSessionUI();
+        
+        console.log('8. 一键进入完成');
+        el('auth-msg').innerHTML = '<span class="success">已成功进入</span>';
+        
+      } catch (err) {
+        console.error('=== 一键进入异常 ===', err);
+        el('auth-msg').innerHTML = `<span class="error">进入失败：${err.message}</span>`;
+      }
+    });
+
+    el('btn-book').addEventListener('click', async () => {
+      el('book-msg').textContent = '提交中...';
+      
+      // 获取当前登录用户
+      const { data: { user }, error: userError } = await supabase.auth.getUser();
+      if (userError || !user) {
+        el('book-msg').innerHTML = '<span class="error">请先登录</span>';
+        return;
+      }
+      
+      const payload = {
+        user_id: user.id,
+        customer_name: el('customer_name').value.trim(),
+        phone: el('phone').value.trim(),
+        service: el('service').value,
+        appointment_time: new Date(el('appointment_time').value).toISOString(),
+        notes: el('notes').value.trim() || null,
+      };
+      
+      if (!payload.customer_name || !payload.phone || !el('appointment_time').value) { 
+        el('book-msg').innerHTML = '<span class="error">请填写必填项</span>'; 
+        return; 
+      }
+      
+      console.log('提交预约数据:', payload);
+      const { error } = await supabase.from('appointments').insert(payload);
+      
+      if (error) { 
+        console.error('预约失败:', error);
+        el('book-msg').innerHTML = `<span class="error">失败：${error.message}</span>`; 
+      } else { 
+        console.log('预约成功');
+        el('book-msg').innerHTML = '<span class="success">预约成功</span>'; 
+        el('customer_name').value=''; 
+        el('phone').value=''; 
+        el('notes').value=''; 
+        await loadMyAppointments(); 
+      }
+    });
+
+    async function loadMyAppointments() {
+      console.log('加载我的预约...');
+      const { data, error } = await supabase.from('appointments').select('*').order('appointment_time', { ascending: true });
+      console.log('预约查询结果:', { data, error });
+      const list = el('my-list'); list.innerHTML = '';
+      if (error) { 
+        console.error('加载预约失败:', error);
+        list.innerHTML = `<div class="item"><span class="error">加载失败：${error.message}</span></div>`; 
+        return; 
+      }
+      if (!data || data.length === 0) { 
+        console.log('没有预约数据');
+        el('my-empty').style.display = ''; 
+        return; 
+      }
+      console.log(`找到 ${data.length} 条预约记录`);
+      el('my-empty').style.display = 'none';
+      for (const a of data) {
+        const div = document.createElement('div'); div.className = 'item';
+        div.innerHTML = `
+          <div>
+            <div style="font-weight:600;">${a.service}  <span class="status">${getStatusText(a.status)}</span></div>
+            <div class="muted">预约时间：${fmt(a.appointment_time)}</div>
+            <div class="muted">姓名：${a.customer_name}  电话：${a.phone}</div>
+            ${a.notes ? `<div class="muted">备注：${a.notes}</div>` : ''}
+          </div>
+          <div>
+            <button class="btn" data-id="${a.id}" data-action="cancel">取消</button>
+          </div>`;
+        list.appendChild(div);
+      }
+      list.querySelectorAll('button[data-action="cancel"]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-id'); btn.disabled = true; btn.textContent = '取消中...';
+          const { error } = await supabase.from('appointments').update({ status: 'cancelled' }).eq('id', id);
+          if (error) alert('取消失败：' + error.message);
+          await loadMyAppointments();
+        });
+      });
+    }
+
+    el('btn-refresh').addEventListener('click', loadMyAppointments);
+    
+    // 初始化时刷新状态
+    console.log('页面加载完成，初始化认证状态...');
+    refreshSessionUI();
+    
+    // 监听认证状态变化
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log('认证状态变化:', { event, session: !!session, userEmail: session?.user?.email });
+      refreshSessionUI();
+    });
+    
+    console.log('所有事件监听器已设置完成');
+  </script>
+</body>
+</html>
